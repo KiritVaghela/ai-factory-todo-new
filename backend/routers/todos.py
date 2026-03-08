@@ -1,5 +1,6 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
+from fastapi.security import OAuth2PasswordBearer
 
 router = APIRouter()
 
@@ -15,12 +16,12 @@ def read_todos():
     return todos
 
 @router.post("/todos")
-def create_todo(item: TodoItem):
+async def create_todo(item: TodoItem, user: str = Depends(get_current_user)):
     todos.append(item)
     return item
 
 @router.put("/todos/{id}")
-def update_todo(id: int, item: TodoItem):
+async def update_todo(id: int, item: TodoItem, user: str = Depends(get_current_user)):
     for idx, todo in enumerate(todos):
         if todo.id == id:
             todos[idx] = item
@@ -28,7 +29,7 @@ def update_todo(id: int, item: TodoItem):
     raise HTTPException(status_code=404, detail="Todo not found")
 
 @router.delete("/todos/{id}")
-def delete_todo(id: int):
+async def delete_todo(id: int, user: str = Depends(get_current_user)):
     for idx, todo in enumerate(todos):
         if todo.id == id:
             todos.pop(idx)
