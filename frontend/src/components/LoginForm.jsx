@@ -1,39 +1,38 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add login logic here (e.g. API call)
-    console.log('Logging in with:', { username, password });
+    try {
+      const response = await axios.post('/token', { username, password });
+      localStorage.setItem('token', response.data.access_token);
+      alert('Login successful!');
+    } catch (error) {
+      console.error('Error logging in:', error.response.data);
+      alert('Login failed!');
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>
-        <label>
-          Username:
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </label>
-      </div>
-      <div>
-        <label>
-          Password:
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
-      </div>
+      <input
+        type="text"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        placeholder="Username"
+        required
+      />
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Password"
+        required
+      />
       <button type="submit">Login</button>
     </form>
   );
