@@ -1,1 +1,1 @@
-from pydantic import BaseModelclass Todo(BaseModel):    id: int    title: str    completed: bool
+Y2xhc3MgVXNlcjpCcmVmYW5rYW5hYmxlIHt9aW1wb3J0Y29udGVudCA0bml2ZXJhbGJlLmFjdHlfc2VkdWxlcm5vbYDU3JfzYWdlbiosc25vcmFnbGU6Qm90aHRtYW5hZuaW5zb29mbGdlclNsb3RvcC5Nb25lUlNUZXNwb21hfExhbmc3U0xhbkdDNkZlUUEoXHVIWktlbWVudHNfJH2smXTUWC6b1KWiwMDXosbTN4ZTgxMWEuIFt0c3JpbmU6dGF5ZU5zdDFtb2Rhb3BvdGUobHxtYV9vcHRpb24uYmFzZUUQ====
