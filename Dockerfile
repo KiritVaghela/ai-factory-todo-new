@@ -1,1 +1,19 @@
-FROM node:14WORKDIR /usr/src/app# Copy package.json and package-lock.jsonCOPY package*.json ./# Install dependenciesRUN npm install# Copy the rest of the source codeCOPY . .# Expose the port that the app runs onEXPOSE 3000# Command to run the appCMD [ "node", "server.js" ]===
+FROM node:14
+
+# Set the working directory
+WORKDIR /app
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code
+COPY . .
+
+# Expose the application port
+EXPOSE 3000
+
+# Start the application
+CMD [ "npm", "start" ]

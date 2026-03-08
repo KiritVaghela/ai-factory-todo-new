@@ -1,1 +1,23 @@
-version: '3.8'services:  web:    build: .    ports:      - '3000:3000'    depends_on:      - db  db:    image: mongo:latest    ports:      - '27017:27017'    volumes:      - mongo_data:/data/dbvolumes:  mongo_data:==
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - '5000:5000'
+    environment:
+      - MONGODB_URI=<your_mongo_uri>
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:

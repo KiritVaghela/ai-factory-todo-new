@@ -1,1 +1,24 @@
-# Python__pycache__/*.pyc*.pyo*.pyd*.envvenv/.env# Nodenode_modules/npm-debug.log*yarn-debug.log*# Builddist/build/# IDE.vscode/.idea/# OS.DS_Store=
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.env
+venv/
+.env
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+
+# Build
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
