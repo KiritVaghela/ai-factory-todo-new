@@ -1,1 +1,8 @@
-from pydantic import BaseModelclass Todo(BaseModel):    id: int    title: str    completed: bool
+from pydantic import BaseModel
+
+class User(BaseModel):
+    username: str
+    email: str
+    password: str
+    full_name: str = None
+    disabled: bool = None
