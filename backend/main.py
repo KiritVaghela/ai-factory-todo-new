@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException
-from routers import todo_router
+from routers import todo_router, user_router
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 app = FastAPI()
@@ -22,3 +22,4 @@ async def read_root(current_user: str = Depends(get_current_user)):
     return {"message": "Welcome to the Todo API"}
 
 app.include_router(todo_router)
+app.include_router(user_router)

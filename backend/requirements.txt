@@ -1,1 +1,4 @@
-fastapiuvicornpydantic==
+fastapi
+uvicorn
+python-jose[cryptography]
+bcrypt
