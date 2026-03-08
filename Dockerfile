@@ -1,0 +1,1 @@
+FROM node:14WORKDIR /usr/src/app# Copy package.json and package-lock.jsonCOPY package*.json ./# Install dependenciesRUN npm install# Copy the rest of the source codeCOPY . .# Expose the port that the app runs onEXPOSE 3000# Command to run the appCMD [ "node", "server.js" ]===

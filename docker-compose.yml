@@ -1,0 +1,1 @@
+version: '3.8'services:  web:    build: .    ports:      - '3000:3000'    depends_on:      - db  db:    image: mongo:latest    ports:      - '27017:27017'    volumes:      - mongo_data:/data/dbvolumes:  mongo_data:==

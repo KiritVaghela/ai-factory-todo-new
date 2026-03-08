@@ -1,0 +1,1 @@
+from fastapi import FastAPIfrom routers import todo_routerapp = FastAPI()app.include_router(todo_router)@app.get("/")async def read_root():    return {"message": "Welcome to the Todo API"}

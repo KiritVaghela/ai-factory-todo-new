@@ -1,0 +1,1 @@
+from pydantic import BaseModelclass Todo(BaseModel):    id: int    title: str    completed: bool
