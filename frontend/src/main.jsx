@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import App from './App.jsx';
 import './styles.css';
 
 // Log to ensure App is being rendered
