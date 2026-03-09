@@ -1,15 +1,24 @@
 from fastapi import FastAPI
 from routers import tasks
+from starlette.middleware.cors import CORSMiddleware
 from fastapi.testclient import TestClient
 
 app = FastAPI()
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Adjust this as needed for your application
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["*"],
+)
 
 app.include_router(tasks.router)
 
 @app.get("/")
 async def root():
     return {"message": "Welcome to the ToDo App API"}
-
 
 # Test the application to ensure that the updated version of FastAPI works without breaking existing functionality.
 client = TestClient(app)
@@ -48,8 +57,14 @@ def test_delete_task():
     task_id = resp.json()['id']
     delete_response = client.delete(f"/tasks/{task_id}")
     assert delete_response.status_code == 200
-    assert delete_response.json()['message'] == "Task deleted successfully!"
+    assert delete_response.json()['message'] == "Task deleted successfully"
 
-if __name__ == '__main__':
-    import uvicorn
-    uvicorn.run(app, host='0.0.0.0', port=8000)
+
+def test_options_method():
+    response = client.options('/tasks/')
+    assert response.status_code == 200
+    assert 'GET' in response.headers['allow']
+    assert 'POST' in response.headers['allow']
+    assert 'PUT' in response.headers['allow']
+    assert 'DELETE' in response.headers['allow']
+    assert 'OPTIONS' in response.headers['allow']

@@ -1,33 +1,30 @@
 from fastapi import APIRouter, HTTPException
-from typing import List
-from pydantic import BaseModel
 
 router = APIRouter()
 
-# Define the task model
-class Task(BaseModel):
-    id: int
-    title: str
-    completed: bool
+@router.options("/tasks")
+async def options_tasks():
+    return {
+        "message": "CORS options for /tasks",
+        "allowed_methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    }
 
-# Mock database
-tasks_db = []
-
-@router.post("/tasks/", response_model=Task)
-async def create_task(task: Task):
-    tasks_db.append(task)
-    return task
-
-@router.get("/tasks/", response_model=List[Task])
+@router.get("/tasks/")
 async def get_tasks():
-    return tasks_db
+    # Logic to retrieve tasks
+    pass
 
-@router.delete("/tasks/{task_id}", response_model=dict)
+@router.post("/tasks/")
+async def create_task(task: dict):
+    # Logic to create a task
+    pass
+
+@router.put("/tasks/{task_id}")
+async def update_task(task_id: int, task: dict):
+    # Logic to update a task
+    pass
+
+@router.delete("/tasks/{task_id}")
 async def delete_task(task_id: int):
-    global tasks_db
-    # Find the task
-    task_to_delete = next((task for task in tasks_db if task.id == task_id), None)
-    if not task_to_delete:
-        raise HTTPException(status_code=404, detail="Task not found")
-    tasks_db.remove(task_to_delete)
-    return {"message": "Task deleted successfully!"}
+    # Logic to delete a task
+    pass
