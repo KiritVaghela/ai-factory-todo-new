@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './src/App';
 import './src/styles.css';
-import LoginForm from './components/LoginForm';
 
 // Check if the root element is present
 if (!document.getElementById('root')) {
@@ -18,6 +17,5 @@ console.log('Verifying application with updated dependencies...');
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <App />
-    <LoginForm />
   </React.StrictMode>
 );

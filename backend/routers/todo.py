@@ -27,3 +27,21 @@ async def read_todos():
     todos = conn.execute("SELECT * FROM todos").fetchall()
     conn.close()
     return [dict(todo) for todo in todos]
+
+@router.put("/todos/{todo_id}", response_model=Todo)
+async def update_todo(todo_id: int, todo: Todo):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE todos SET title = ?, completed = ? WHERE id = ?", (todo.title, todo.completed, todo_id))
+    conn.commit()
+    conn.close()
+    return todo
+
+@router.delete("/todos/{todo_id}")
+async def delete_todo(todo_id: int):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM todos WHERE id = ?", (todo_id,))
+    conn.commit()
+    conn.close()
+    return {"message": "Todo deleted successfully!"}

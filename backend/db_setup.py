@@ -1,21 +1,16 @@
 import sqlite3
 
-DATABASE = 'todos.db'
+DATABASE = 'tasks.db'
 
-def create_connection():
-    conn = sqlite3.connect(DATABASE)
-    return conn
-
-def create_table():
-    conn = create_connection()
-    cursor = conn.cursor()
-    cursor.execute('''CREATE TABLE IF NOT EXISTS todos (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        title TEXT NOT NULL,
-                        completed BOOLEAN NOT NULL DEFAULT 0
-                    )''')
-    conn.commit()
+# Initialize the databases with required tables
+def init_tasks_db():
+    with sqlite3.connect(DATABASE) as conn:
+        conn.execute('''CREATE TABLE IF NOT EXISTS tasks (
+                          id INTEGER PRIMARY KEY,
+                          title TEXT NOT NULL,
+                          completed BOOLEAN NOT NULL CHECK (completed IN (0, 1))
+                      );''')
     conn.close()
 
 if __name__ == '__main__':
-    create_table()
+    init_tasks_db()
