@@ -1,19 +1,14 @@
-const { exec } = require('child_process');
+const { execSync } = require('child_process');
 
-// Function to install dependencies
-const installDependencies = () => {
-  exec('npm install', (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Error executing npm install: ${error.message}`);
-      return;
+// Install Vite and necessary plugins
+function installDependencies() {
+    try {
+        console.log('Installing Vite and React plugin...');
+        execSync('npm install --save-dev vite @vitejs/plugin-react', { stdio: 'inherit' });
+        console.log('Dependencies installed successfully.');
+    } catch (error) {
+        console.error('Error installing dependencies:', error);
     }
-    if (stderr) {
-      console.error(`Error: ${stderr}`);
-      return;
-    }
-    console.log(`NPM install output: ${stdout}`);
-  });
-};
+}
 
-// Run the install function
 installDependencies();

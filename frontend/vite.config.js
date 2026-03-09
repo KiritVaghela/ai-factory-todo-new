@@ -24,5 +24,10 @@ export default defineConfig({
     drop: ['console', 'debugger'],
     jsxFactory: 'React.createElement',
     jsxFragment: 'React.Fragment'
-  }
+  },
+  resolve: {
+    alias: {
+      '@': '/src',
+    }
+  },
 });

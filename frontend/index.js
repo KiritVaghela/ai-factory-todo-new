@@ -9,10 +9,17 @@ if (!document.getElementById('root')) {
 }
 
 // Log to help with debugging
-console.log('Starting React Application');
+console.log('Starting React Application with Vite configuration');
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+// Use Vite's development features
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>
 );
+
+// Adding support for hot module replacement
+if (import.meta.hot) {
+  import.meta.hot.accept();
+}
