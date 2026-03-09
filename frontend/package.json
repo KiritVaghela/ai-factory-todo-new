@@ -1,20 +1,29 @@
 {
-  "name": "todo-app",
+  "name": "ai-factory-todo",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-react": "latest",
-    "vite": "latest"
+    "build": "vite build",
+    "serve": "vite preview"
   },
   "dependencies": {
-    "axios": "^1.13.6",
-    "fastapi": "latest",
-    "pydantic": "latest",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
-  }
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "axios": "^0.21.1",
+    "@vitejs/plugin-react": "^1.0.0"
+  },
+  "devDependencies": {
+    "vite": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    "last 2 versions",
+    "not dead"
+  ]
 }

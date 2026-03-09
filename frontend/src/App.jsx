@@ -47,6 +47,12 @@ function App() {
     }
   };
 
+  // Function to test UI changes
+  const testUIChanges = () => {
+    console.log('Testing UI changes to ensure functionality and appearance.');
+    // Implement UI testing logic here
+  };
+
   return (
     <div>
       <h1>Simple ToDo App</h1>
@@ -68,10 +74,11 @@ function App() {
               onChange={() => toggleTaskCompletion(task)}
             />
             {task.title}
+            <button onClick={() => deleteTask(task.id)}>Delete</button>
           </li>
         ))}
       </ul>
-      <p>Manage your tasks efficiently!</p>
+      <button onClick={testUIChanges}>Test UI Changes</button>
     </div>
   );
 }
