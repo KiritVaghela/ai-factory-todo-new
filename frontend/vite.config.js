@@ -14,8 +14,15 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
+    rollupOptions: {
+      output: {
+        format: 'esm'
+      }
+    }
   },
   esbuild: {
-    drop: ['console', 'debugger']
+    drop: ['console', 'debugger'],
+    jsxFactory: 'React.createElement',
+    jsxFragment: 'React.Fragment'
   }
 });
