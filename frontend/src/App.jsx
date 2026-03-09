@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { createRoot } from 'react-dom/client';
+import './styles.css'; // Import Tailwind CSS here
 
 function App() {
   console.log('Rendering App component');
@@ -59,34 +60,29 @@ function App() {
   };
 
   // UI Tests for Desktop and Mobile
-  useEffect(() => {
-    console.log('Conducting UI tests');
-    // Run UI tests here for both desktop and mobile views
-  }, []);
 
   return (
     <div>
-      <h1>ToDo App</h1>
-      <form onSubmit={submitTask}>
+      <h1 className="text-2xl font-bold mb-4">ToDo App</h1>
+      <form onSubmit={submitTask} className="mb-4">
         <input
           type="text"
           value={taskTitle}
           onChange={(e) => setTaskTitle(e.target.value)}
-          placeholder="Enter a new task"
+          className="border rounded p-2"
+          placeholder="Add a new task..."
           required
         />
-        <button type="submit">Add Task</button>
+        <button type="submit" className="ml-2 bg-blue-500 text-white rounded p-2">Add Task</button>
       </form>
       <ul>
-        {tasks.map((task) => (
-          <li key={task.id}>
-            <input
-              type="checkbox"
-              checked={task.completed}
-              onChange={() => toggleTaskCompletion(task)}
-            />
-            {task.title}
-            <button onClick={() => deleteTask(task.id)}>Delete</button>
+        {tasks.map(task => (
+          <li key={task.id} className="flex justify-between items-center">
+            <span className={task.completed ? 'line-through' : ''}>{task.title}</span>
+            <div>
+              <button onClick={() => toggleTaskCompletion(task)} className="bg-yellow-500 text-white rounded p-1 mr-2">Toggle</button>
+              <button onClick={() => deleteTask(task.id)} className="bg-red-500 text-white rounded p-1">Delete</button>
+            </div>
           </li>
         ))}
       </ul>
