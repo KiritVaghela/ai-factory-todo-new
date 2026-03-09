@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function App() {
@@ -7,6 +7,19 @@ function App() {
   // State to hold task input
   const [taskTitle, setTaskTitle] = useState('');
   const [tasks, setTasks] = useState([]);
+
+  // Fetch tasks from server on component mount
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/tasks/');
+        setTasks(response.data);
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+      }
+    };
+    fetchTasks();
+  }, []);
 
   // Function to handle task submission
   const submitTask = async (event) => {
@@ -20,6 +33,17 @@ function App() {
       setTaskTitle(''); // Clear the input field
     } catch (error) {
       console.error('Error submitting task:', error);
+    }
+  };
+
+  // Function to handle task completion state change
+  const toggleTaskCompletion = async (task) => {
+    try {
+      const updatedTask = { ...task, completed: !task.completed };
+      await axios.put(`http://localhost:8000/tasks/${task.id}`, updatedTask);
+      setTasks(tasks.map(t => (t.id === task.id ? updatedTask : t))); // Update tasks with the modified task
+    } catch (error) {
+      console.error('Error updating task:', error);
     }
   };
 
@@ -37,7 +61,14 @@ function App() {
       </form>
       <ul>
         {tasks.map((task) => (
-          <li key={task.id}>{task.title}</li>
+          <li key={task.id}>
+            <input
+              type="checkbox"
+              checked={task.completed}
+              onChange={() => toggleTaskCompletion(task)}
+            />
+            {task.title}
+          </li>
         ))}
       </ul>
       <p>Manage your tasks efficiently!</p>

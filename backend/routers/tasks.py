@@ -46,6 +46,17 @@ async def update_task(task_id: int, task: dict):
     conn.close()
     return {"id": task_id, "title": task['title'], "completed": task['completed']}
 
+@router.put("/tasks/{task_id}/complete")
+async def complete_task(task_id: int):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('UPDATE tasks SET completed = ? WHERE id = ?', (True, task_id))
+    if cursor.rowcount == 0:
+        raise HTTPException(status_code=404, detail="Task not found")
+    conn.commit()
+    conn.close()
+    return {"message": "Task marked as completed"}
+
 @router.delete("/tasks/{task_id}")
 async def delete_task(task_id: int):
     conn = get_db_connection()
