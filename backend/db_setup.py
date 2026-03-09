@@ -1,16 +1,26 @@
 import sqlite3
 
-DATABASE = 'tasks.db'
+# Connect to SQLite database
+conn = sqlite3.connect('tasks.db')
+cursor = conn.cursor()
 
-# Initialize the databases with required tables
-def init_tasks_db():
-    with sqlite3.connect(DATABASE) as conn:
-        conn.execute('''CREATE TABLE IF NOT EXISTS tasks (
-                          id INTEGER PRIMARY KEY,
-                          title TEXT NOT NULL,
-                          completed BOOLEAN NOT NULL CHECK (completed IN (0, 1))
-                      );''')
-    conn.close()
+# Create tasks table if it doesn't exist
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS tasks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    completed BOOLEAN NOT NULL DEFAULT 0
+);
+''')
 
-if __name__ == '__main__':
-    init_tasks_db()
+# Function to insert initial data
+def insert_initial_data():
+    cursor.execute('''INSERT INTO tasks (title, completed) VALUES (?, ?)''', ('Sample Task 1', False))
+    cursor.execute('''INSERT INTO tasks (title, completed) VALUES (?, ?)''', ('Sample Task 2', True))
+    conn.commit()
+
+# Uncomment the line below to insert initial data if needed
+# insert_initial_data()
+
+# Close the connection
+conn.close()

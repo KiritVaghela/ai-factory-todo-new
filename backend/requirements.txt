@@ -1,2 +1,2 @@
-fastapi==0.101.0
-# Other dependencies can be added below this line
+fastapi
+uvicorn
