@@ -1,17 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import './DeleteButton.css';
+import './DeleteButton.css'; // Assuming the new CSS class is defined here
 
-function DeleteButton({ onClick }) {
+const DeleteButton = ({ onClick }) => {
   return (
-    <button className="delete-button" onClick={onClick} style={{ margin: '10px' }}>
+    <button className="new-css-class" onClick={onClick}> {/* Use the new CSS class */}
       Delete
     </button>
   );
-}
-
-DeleteButton.propTypes = {
-  onClick: PropTypes.func.isRequired,
 };
 
 export default DeleteButton;
