@@ -1,45 +1,51 @@
 # ToDo App
 
-## Setting Up
+## Introduction
+This is a simple ToDo application built with FastAPI for the backend and React for the frontend. The application allows users to create, read, update, and delete tasks.
 
-1. **Clone the repository**:
-   ```bash
-   git clone <repository-url>
-   cd ai-factory-todo-new
-   ```
+## Design Decisions
+- **FastAPI** was chosen for the backend due to its high performance and automatic generation of API documentation.
+- **SQLite** is used as the database for simplicity and ease of setup.
+- **React** was selected for the frontend to build a dynamic user interface.
 
-2. **Install the dependencies**:
+## Components Usage
+### Backend
+- `main.py`: The entry point of the application. Sets up FastAPI, adds middleware, and defines the root endpoint.
+- `routers/tasks.py`: Contains the routes related to task operations including creating, retrieving, updating, and deleting tasks.
+- `db_setup.py`: Manages the setup of the SQLite database.
+
+### Frontend
+- `src/App.jsx`: The main React component that handles task fetching and rendering.
+- `src/TaskList.jsx`: A component for displaying the list of tasks.
+- `src/DeleteButton.jsx`: A component for rendering a button to delete a task.
+
+## Installation
+1. Clone the repository.
+2. Navigate to the backend and install dependencies with:
    ```bash
    pip install -r requirements.txt
+   ```
+3. Navigate to the frontend and install dependencies with:
+   ```bash
    npm install
    ```
-
-3. **Set up the database**:
-   To set up the SQLite database, ensure you have SQLite installed and follow these commands:
+4. Start the backend server:
    ```bash
-   cd backend
-   python db_setup.py
+   uvicorn main:app --reload
+   ```
+5. Start the frontend development server:
+   ```bash
+   npm run dev
    ```
 
-4. **Run the application**:
-   - For the backend:
-     ```bash
-     uvicorn main:app --reload
-     ```
-   - For the frontend:
-     ```bash
-     npm run dev
-     ```
+## Running Tests
+To run tests for the backend, use:
+```bash
+pytest
+```
 
-5. **Access the application**:
-   Navigate to `http://localhost:3000` in your web browser to access the application.
-
-## Features
-- Add, update, and delete tasks.
-- Mark tasks as complete or incomplete.
-
-## Development
-- To contribute to the project, please follow the standard git workflow: create a branch, make your changes, and submit a pull request. 
+## Contributing
+Contributions are welcome! Please create an issue or submit a pull request for any proposed changes.
 
 ## License
 This project is licensed under the MIT License.
