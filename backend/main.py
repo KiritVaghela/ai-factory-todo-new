@@ -21,6 +21,7 @@ def test_root():
     assert response.status_code == 200
     assert response.json() == {"message": "Welcome to the ToDo App API"}
 
+
 def test_create_task():
     response = client.post("/tasks/", json={"title": "Test Task", "completed": False})
     assert response.status_code == 200
@@ -31,6 +32,16 @@ def test_get_tasks():
     response = client.get("/tasks/")
     assert response.status_code == 200
     assert isinstance(response.json(), list)
+
+
+def test_update_task():
+    # First, create a task to update
+    resp = client.post("/tasks/", json={"title": "Task to update", "completed": False})
+    task_id = resp.json()['id']
+    update_response = client.put(f"/tasks/{task_id}", json={"title": "Updated Task", "completed": True})
+    assert update_response.status_code == 200
+    assert update_response.json()['title'] == "Updated Task"
+    assert update_response.json()['completed'] is True
 
 
 def test_delete_task():
