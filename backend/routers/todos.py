@@ -1,36 +1,21 @@
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from models import Todo
+from typing import List
 
 router = APIRouter()
+todos_db = []
 
-todos = []  # This will act as an in-memory database
+@router.post("/todos/", response_model=Todo)
+async def create_todo(todo: Todo):
+    todos_db.append(todo)
+    return todo
 
-class TodoItem(BaseModel):
-    id: int
-    title: str
-    completed: bool = False
+@router.get("/todos/", response_model=List[Todo])
+async def read_todos():
+    return todos_db
 
-@router.get("/todos")
-def read_todos():
-    return todos
-
-@router.post("/todos")
-def create_todo(item: TodoItem):
-    todos.append(item)
-    return item
-
-@router.put("/todos/{id}")
-def update_todo(id: int, item: TodoItem):
-    for idx, todo in enumerate(todos):
-        if todo.id == id:
-            todos[idx] = item
-            return item
-    raise HTTPException(status_code=404, detail="Todo not found")
-
-@router.delete("/todos/{id}")
-def delete_todo(id: int):
-    for idx, todo in enumerate(todos):
-        if todo.id == id:
-            todos.pop(idx)
-            return {"detail": "Todo deleted"}
-    raise HTTPException(status_code=404, detail="Todo not found")
+@router.delete("/todos/{todo_id}")
+async def delete_todo(todo_id: int):
+    global todos_db
+    todos_db = [todo for todo in todos_db if todo.id != todo_id]
+    return {"message": "Todo deleted successfully!"}
