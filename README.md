@@ -1,65 +1,25 @@
-# Todo App
+# ToDo App
 
 ## Description
-A simple and efficient Todo application to manage personal or professional tasks.
+A simple and efficient ToDo application to manage daily tasks.
 
 ## Features
-- Add new todo items
-- Edit existing todo items
-- Delete todo items
-- Mark todos as completed
-- Filter todos by status (all, active, completed)
-- User authentication (login/register)
-- Persistent data storage
-- Responsive design
+- **User Authentication**: Allow users to register, login, and manage their sessions.
+- **Task Management**: CRUD operations for tasks including create, read, update, and delete.
+- **Categories/Tags**: Organize tasks using categories or tags for better management.
+- **Due Dates**: Set and manage due dates for tasks.
+- **Filter and Sort**: Filter tasks by status (completed/pending) and sort by due date.
+- **Responsive UI**: A user-friendly interface for desktop and mobile devices.
+- **Notifications**: Push notifications for upcoming due dates.
 
 ## Getting Started
+1. **Clone the repository**: `git clone <repository-url>`
+2. **Navigate to the project directory**: `cd todo-app`
+3. **Install dependencies**: `npm install`
+4. **Run the application**: `npm start`
 
-### Prerequisites
-- Node.js
-- MongoDB
+## Deployment
+This application is deployed on Heroku and uses MongoDB Atlas for the database.
 
-### Installation
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   ```
-2. Navigate to the frontend and backend directories:
-   ```bash
-   cd frontend
-   npm install
-   cd ../backend
-   npm install
-   ```
-
-### Running the Application
-To start the application, run:
-```bash
-docker-compose up
-```
-
-## Roadmap
-### Phase 1
-- Set up project repository
-- Initialize frontend and backend environments
-- Create basic UI for todo list
-- Implement backend API endpoints
-- Connect frontend to backend
-
-### Phase 2
-- Add authentication functionality
-- Implement filtering and sorting features
-- Enhance UI design and styling
-- Write unit tests for components and APIs
-
-### Phase 3
-- Deploy frontend and backend to the respective platforms
-- Set up CI/CD pipelines
-- Monitor logs and performance
-- Gather user feedback for improvements
-
-## Team
-- **Frontend Developer**: Develop UI and handle state management
-- **Backend Developer**: Create RESTful APIs and manage database
-- **UI/UX Designer**: Design user-friendly interface
-- **QA Engineer**: Test functionalities and ensure quality
+## License
+MIT License

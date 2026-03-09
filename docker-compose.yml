@@ -1,23 +1,20 @@
 version: '3.8'
-
 services:
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+  web:
+    build: .
     ports:
-      - '5000:5000'
+      - '3000:3000'
     environment:
-      - MONGODB_URI=<your_mongo_uri>
+      - NODE_ENV=production
     depends_on:
       - mongo
 
   mongo:
-    image: mongo
+    image: mongo:4.4
     ports:
       - '27017:27017'
     volumes:
-      - mongo_data:/data/db
+      - mongo-data:/data/db
 
 volumes:
-  mongo_data:
+  mongo-data:
