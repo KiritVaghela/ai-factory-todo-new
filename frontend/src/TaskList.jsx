@@ -1,26 +1,40 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import axios from 'axios';
 
-const TaskList = () => {
-  const [tasks, setTasks] = useState([]);
+function TaskList() {
+  const [tasks, setTasks] = React.useState([]);
 
-  useEffect(() => {
-    fetch('/tasks/')
-      .then(response => response.json())
-      .then(data => setTasks(data));
+  React.useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/tasks/');
+        setTasks(response.data);
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+      }
+    };
+    fetchTasks();
   }, []);
 
+  const handleCheckboxChange = async (taskId, checked) => {
+    // Handle checkbox change logic here if needed
+  };
+
   return (
-    <div>
-      <h2>Your Tasks</h2>
-      <ul>
-        {tasks.map(task => (
-          <li key={task.id}>
-            <span style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>{task.title}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ul>
+      {tasks.map((task) => (
+        <li key={task.id} style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>
+          <input
+            type="checkbox"
+            checked={task.completed}
+            onChange={(e) => handleCheckboxChange(task.id, e.target.checked)}
+            disabled={task.completed} // Disable checkbox if task is completed
+          />
+          {task.title}
+        </li>
+      ))}
+    </ul>
   );
-};
+}
 
 export default TaskList;
