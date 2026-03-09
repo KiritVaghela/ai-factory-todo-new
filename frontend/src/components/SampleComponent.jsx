@@ -1,12 +1,12 @@
+// SampleComponent.jsx
 import React from 'react';
 
-function SampleComponent() {
-  return (
-    <div>
-      <h2>This is a Sample Component!</h2>
-      <p>Testing JSX functionality.</p>
-    </div>
-  );
-}
+const SampleComponent = () => {
+    return (
+        <div>
+            <h2>This is a Sample Component</h2>
+        </div>
+    );
+};
 
 export default SampleComponent;
