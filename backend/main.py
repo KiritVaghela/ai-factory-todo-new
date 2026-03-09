@@ -1,11 +1,70 @@
 from fastapi import FastAPI
-from routers import tasks, users
+from routers import tasks
+from starlette.middleware.cors import CORSMiddleware
+from fastapi.testclient import TestClient
 
 app = FastAPI()
 
-app.include_router(users.router)
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Adjust this as needed for your application
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["*"],
+)
+
 app.include_router(tasks.router)
 
 @app.get("/")
 async def root():
     return {"message": "Welcome to the ToDo App API"}
+
+# Test the application to ensure that the updated version of FastAPI works without breaking existing functionality.
+client = TestClient(app)
+
+def test_root():
+    response = client.get("/")
+    assert response.status_code == 200
+    assert response.json() == {"message": "Welcome to the ToDo App API"}
+
+
+def test_create_task():
+    response = client.post("/tasks/", json={"title": "Test Task", "completed": False})
+    assert response.status_code == 200
+    assert response.json()['title'] == "Test Task"
+
+
+def test_get_tasks():
+    response = client.get("/tasks/")
+    assert response.status_code == 200
+    assert isinstance(response.json(), list)
+
+
+def test_update_task():
+    # First, create a task to update
+    resp = client.post("/tasks/", json={"title": "Task to update", "completed": False})
+    task_id = resp.json()['id']
+    update_response = client.put(f"/tasks/{task_id}", json={"title": "Updated Task", "completed": True})
+    assert update_response.status_code == 200
+    assert update_response.json()['title'] == "Updated Task"
+    assert update_response.json()['completed'] is True
+
+
+def test_delete_task():
+    # First, create a task to delete
+    resp = client.post("/tasks/", json={"title": "Task to delete", "completed": False})
+    task_id = resp.json()['id']
+    delete_response = client.delete(f"/tasks/{task_id}")
+    assert delete_response.status_code == 200
+    assert delete_response.json()['message'] == "Task deleted successfully"
+
+
+def test_options_method():
+    response = client.options('/tasks/')
+    assert response.status_code == 200
+    assert 'GET' in response.headers['allow']
+    assert 'POST' in response.headers['allow']
+    assert 'PUT' in response.headers['allow']
+    assert 'DELETE' in response.headers['allow']
+    assert 'OPTIONS' in response.headers['allow']

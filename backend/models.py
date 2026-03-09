@@ -1,8 +1,12 @@
-from pydantic import BaseModel
+from sqlalchemy import Column, Integer, String, Boolean
+from database import Base
 
-class User(BaseModel):
-    username: str
-    email: str
-    password: str
-    full_name: str = None
-    disabled: bool = None
+class Task(Base):
+    __tablename__ = 'tasks'
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String, index=True)
+    completed = Column(Boolean, default=False)
+
+    def __repr__(self):
+        return f"<Task(id={self.id}, title='{self.title}', completed={self.completed})>"
