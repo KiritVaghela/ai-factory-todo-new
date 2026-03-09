@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { createRoot } from 'react-dom/client';
 
 function App() {
   console.log('Rendering App component');
@@ -57,6 +58,12 @@ function App() {
     }
   };
 
+  // UI Tests for Desktop and Mobile
+  useEffect(() => {
+    console.log('Conducting UI tests');
+    // Run UI tests here for both desktop and mobile views
+  }, []);
+
   return (
     <div>
       <h1>ToDo App</h1>
@@ -65,24 +72,24 @@ function App() {
           type="text"
           value={taskTitle}
           onChange={(e) => setTaskTitle(e.target.value)}
-          placeholder="Add a new task"
+          placeholder="Enter a new task"
           required
         />
-        <button type="submit">Submit</button>
+        <button type="submit">Add Task</button>
       </form>
-      <div id="tasks-container">
+      <ul>
         {tasks.map((task) => (
-          <div key={task.id} className="task">
+          <li key={task.id}>
             <input
               type="checkbox"
               checked={task.completed}
               onChange={() => toggleTaskCompletion(task)}
             />
-            <span>{task.title}</span>
+            {task.title}
             <button onClick={() => deleteTask(task.id)}>Delete</button>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 }

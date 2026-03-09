@@ -1,5 +1,4 @@
 import React from 'react';
-import './DeleteButton.css'; // Assuming the new CSS class is defined here
 
 const DeleteButton = ({ onClick }) => {
   return (
