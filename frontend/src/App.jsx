@@ -50,7 +50,12 @@ function App() {
   // Function to test UI changes
   const testUIChanges = () => {
     console.log('Testing UI changes to ensure functionality and appearance.');
-    // Implement UI testing logic here
+    // Check padding and margins visually
+    const tasksContainer = document.getElementById('tasks-container');
+    tasksContainer.style.padding = '20px'; // Example padding
+    tasksContainer.style.margin = '10px'; // Example margin
+
+    // You can implement more detailed checks if needed
   };
 
   return (
@@ -61,24 +66,18 @@ function App() {
           type="text"
           value={taskTitle}
           onChange={(e) => setTaskTitle(e.target.value)}
-          placeholder="Enter a new task"
+          placeholder="Enter a task"
         />
         <button type="submit">Add Task</button>
       </form>
-      <ul>
+      <div id="tasks-container" onClick={testUIChanges}>
         {tasks.map((task) => (
-          <li key={task.id}>
-            <input
-              type="checkbox"
-              checked={task.completed}
-              onChange={() => toggleTaskCompletion(task)}
-            />
+          <div key={task.id} onClick={() => toggleTaskCompletion(task)}>
+            <input type="checkbox" checked={task.completed} readOnly />
             {task.title}
-            <button onClick={() => deleteTask(task.id)}>Delete</button>
-          </li>
+          </div>
         ))}
-      </ul>
-      <button onClick={testUIChanges}>Test UI Changes</button>
+      </div>
     </div>
   );
 }

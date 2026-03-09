@@ -1,62 +1,50 @@
-/* New UI framework styles should be defined here */
-
-.app-container {
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px; /* Added padding to the body for better spacing */
 }
 
-.app-title {
-  font-size: 24px;
-  margin-bottom: 20px;
-  text-align: center;
+h1 {
+    color: #333;
 }
 
-.task-form {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
+#root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-.task-input {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+input {
+    padding: 10px; /* Added padding to input fields */
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
-.add-task-button {
-  padding: 10px 15px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+button {
+    padding: 10px 15px; /* Added padding to buttons */
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
-.add-task-button:hover {
-  background-color: #218838;
+button:hover {
+    background-color: #218838;
 }
 
 .task-list {
-  list-style-type: none;
-  padding: 0;
+    margin-top: 20px;
 }
 
 .task-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.task-checkbox {
-  margin-right: 10px;
-}
-
-.completed {
-  text-decoration: line-through;
-  color: #6c757d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px; /* Added padding to task items */
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    border-radius: 4px;
 }
