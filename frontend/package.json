@@ -2,16 +2,15 @@
   "name": "your-project-name",
   "version": "1.0.0",
   "scripts": {
-    "start": "vite",
+    "dev": "vite",
     "build": "vite build",
     "serve": "vite preview"
   },
   "dependencies": {
-    "react": "^17.0.0",
-    "react-dom": "^17.0.0",
-    "@vitejs/plugin-react": "^1.0.0"  // Newly added dependency
+    // Add your dependencies here
   },
   "devDependencies": {
+    "@vitejs/plugin-react": "^2.0.0",
     "vite": "^2.0.0"
   }
 }
