@@ -47,34 +47,39 @@ function App() {
     }
   };
 
-  // Function to test UI changes
-  const testUIChanges = () => {
-    console.log('Testing UI changes to ensure functionality and appearance.');
-    // Check padding and margins visually
-    const tasksContainer = document.getElementById('tasks-container');
-    tasksContainer.style.padding = '20px'; // Example padding
-    tasksContainer.style.margin = '10px'; // Example margin
-
-    // You can implement more detailed checks if needed
+  // Function to handle task deletion
+  const deleteTask = async (taskId) => {
+    try {
+      await axios.delete(`http://localhost:8000/tasks/${taskId}`);
+      setTasks(tasks.filter(task => task.id !== taskId)); // Remove the deleted task from state
+    } catch (error) {
+      console.error('Error deleting task:', error);
+    }
   };
 
   return (
     <div>
-      <h1>Simple ToDo App</h1>
+      <h1>ToDo App</h1>
       <form onSubmit={submitTask}>
         <input
           type="text"
           value={taskTitle}
           onChange={(e) => setTaskTitle(e.target.value)}
-          placeholder="Enter a task"
+          placeholder="Add a new task"
+          required
         />
-        <button type="submit">Add Task</button>
+        <button type="submit">Submit</button>
       </form>
-      <div id="tasks-container" onClick={testUIChanges}>
+      <div id="tasks-container">
         {tasks.map((task) => (
-          <div key={task.id} onClick={() => toggleTaskCompletion(task)}>
-            <input type="checkbox" checked={task.completed} readOnly />
-            {task.title}
+          <div key={task.id} className="task">
+            <input
+              type="checkbox"
+              checked={task.completed}
+              onChange={() => toggleTaskCompletion(task)}
+            />
+            <span>{task.title}</span>
+            <button onClick={() => deleteTask(task.id)}>Delete</button>
           </div>
         ))}
       </div>
