@@ -1,16 +1,19 @@
 {
-  "name": "your-project-name",
+  "name": "ai-factory-todo-new",
   "version": "1.0.0",
+  "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview"
   },
   "dependencies": {
-    // Add your dependencies here
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "@vitejs/plugin-react": "^1.0.0",
+    "nanoid": "^3.1.20"  // Added missing dependency
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^2.0.0",
-    "vite": "^2.0.0"
+    "vite": "^2.6.14"
   }
 }
