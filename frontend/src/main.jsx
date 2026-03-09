@@ -1,7 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './app';
+import App from './App';
 import './styles.css';
+
+// Log to ensure App is being rendered
+console.log('Rendering main application...');
 
 // Render the application
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -9,5 +12,3 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <App />
   </React.StrictMode>
 );
-
-// Ensure that App is imported and rendered correctly
