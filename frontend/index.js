@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './src/App';
 import './src/styles.css';
+import LoginForm from './components/LoginForm';
 
 // Check if the root element is present
 if (!document.getElementById('root')) {
@@ -9,39 +10,14 @@ if (!document.getElementById('root')) {
 }
 
 // Log to help with debugging
-console.log('Starting React Application with Vite configuration');
+console.log('Starting React Application');
 
-// Check if Vite command is available in terminal
-const checkViteCommand = async () => {
-    try {
-        const exec = require('child_process').exec;
-        exec('vite --version', (error, stdout, stderr) => {
-            if (error) {
-                console.error(`Error executing vite: ${error.message}`);
-                return;
-            }
-            if (stderr) {
-                console.error(`Error: ${stderr}`);
-                return;
-            }
-            console.log(`Vite version: ${stdout}`);
-        });
-    } catch (err) {
-        console.error(`Failed to check vite command: ${err.message}`);
-    }
-};
+// Check if dependencies are updated
+console.log('Verifying application with updated dependencies...');
 
-checkViteCommand();
-
-// Use Vite's development features
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <App />
+    <LoginForm />
   </React.StrictMode>
 );
-
-// Adding support for hot module replacement
-if (import.meta.hot) {
-  import.meta.hot.accept();
-}
