@@ -13,7 +13,7 @@
   "dependencies": {
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "fastapi": "^0.80.0",  // Added example of potential backend dependencies
-    "pydantic": "^1.9.0"  // Added example of potential backend dependencies
+    "fastapi": "^0.80.0",  
+    "pydantic": "^1.9.0" 
   }
 }
