@@ -1,22 +1,29 @@
-FROM node:14
+FROM python:3.11-slim
 
-# Set working directory
-WORKDIR /usr/src/app
+# Set work directory
+WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install dependencies
-RUN npm install
+# Copy backend requirements
+COPY backend/requirements.txt ./backend/requirements.txt
 
-# Copy source files
-COPY . .
+# Install Python dependencies (including JWT library)
+RUN pip install --upgrade pip \
+    && pip install -r backend/requirements.txt \
+    && pip install PyJWT
 
-# Build the app (if needed)
-RUN npm run build
+# Copy backend code
+COPY backend/ ./backend/
 
-# Expose the port
-EXPOSE 3000
+# Expose port
+EXPOSE 8000
 
-# Start the application
-CMD [ "npm", "start" ]
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
+
+# Start the FastAPI app
+CMD ["python", "-m", "backend.main"]
