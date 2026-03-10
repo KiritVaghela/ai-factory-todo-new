@@ -1,51 +1,73 @@
-# ToDo App
+# AI Factory ToDo Application
 
-## Introduction
-This is a simple ToDo application built with FastAPI for the backend and React for the frontend. The application allows users to create, read, update, and delete tasks.
+This project is a full-stack ToDo application with a FastAPI backend and a React frontend.
 
-## Design Decisions
-- **FastAPI** was chosen for the backend due to its high performance and automatic generation of API documentation.
-- **SQLite** is used as the database for simplicity and ease of setup.
-- **React** was selected for the frontend to build a dynamic user interface.
+## Project Structure
 
-## Components Usage
+- `backend/`: Contains the FastAPI backend code.
+- `frontend/`: Contains the React frontend code.
+
+## Running the Application
+
 ### Backend
-- `main.py`: The entry point of the application. Sets up FastAPI, adds middleware, and defines the root endpoint.
-- `routers/tasks.py`: Contains the routes related to task operations including creating, retrieving, updating, and deleting tasks.
-- `db_setup.py`: Manages the setup of the SQLite database.
 
-### Frontend
-- `src/App.jsx`: The main React component that handles task fetching and rendering.
-- `src/TaskList.jsx`: A component for displaying the list of tasks.
-- `src/DeleteButton.jsx`: A component for rendering a button to delete a task.
-
-## Installation
-1. Clone the repository.
-2. Navigate to the backend and install dependencies with:
+1. Navigate to the `backend` directory.
+2. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
-3. Navigate to the frontend and install dependencies with:
+3. Initialize the database:
    ```bash
-   npm install
+   python db_setup.py
    ```
-4. Start the backend server:
+4. Run the backend server:
    ```bash
    uvicorn main:app --reload
    ```
-5. Start the frontend development server:
+
+### Frontend
+
+1. Navigate to the `frontend` directory.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Run the frontend development server:
    ```bash
    npm run dev
    ```
 
-## Running Tests
-To run tests for the backend, use:
+## Code Validation
+
+You can validate the code quality and style using the following commands:
+
+### Using `init` command
+
+Run the following command in the `backend` directory to initialize and validate the code:
+
 ```bash
-pytest
+./lint.sh init
 ```
 
-## Contributing
-Contributions are welcome! Please create an issue or submit a pull request for any proposed changes.
+This will set up the necessary environment and run validation checks.
+
+### Using `lint` command
+
+To run linting and code validation checks, use:
+
+```bash
+./lint.sh lint
+```
+
+This will check the code for style issues and potential errors.
+
+Make sure you have the necessary linters and tools installed as specified in the `backend/requirements.txt` or `lint.sh` script.
+
+## Additional Information
+
+- The backend API is accessible at `http://localhost:8000` by default.
+- The frontend runs on `http://localhost:3000`.
 
 ## License
+
 This project is licensed under the MIT License.

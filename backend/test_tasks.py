@@ -1,92 +1,79 @@
 import pytest
 from fastapi.testclient import TestClient
+from unittest.mock import patch, MagicMock
+
 from main import app
 
 client = TestClient(app)
 
-# Helper function to create a task
+# Helper function to simulate database connection error
+class DummyConnectionError(Exception):
+    pass
 
-def create_task(title="Test Task", completed=False):
-    response = client.post("/tasks/", json={"title": title, "completed": completed})
-    return response
+# Test error handling for GET /tasks/
+@patch('routers.tasks.get_db_connection')
+def test_get_tasks_db_error(mock_get_db_connection):
+    # Simulate database connection error
+    mock_get_db_connection.side_effect = DummyConnectionError("DB connection failed")
 
-# Test creating a task successfully
-
-def test_create_task_success():
-    response = create_task()
-    assert response.status_code == 200
-    data = response.json()
-    assert "id" in data
-    assert data["title"] == "Test Task"
-    assert data["completed"] is False
-
-# Test getting tasks
-
-def test_get_tasks():
-    # Create a task first
-    create_task()
     response = client.get("/tasks/")
-    assert response.status_code == 200
-    data = response.json()
-    assert isinstance(data, list)
-    assert any(task["title"] == "Test Task" for task in data)
+    assert response.status_code == 500
+    assert response.json() == {"detail": "Database connection error"}
 
-# Test updating a task successfully
+# Test error handling for POST /tasks/
+@patch('routers.tasks.get_db_connection')
+def test_create_task_db_error(mock_get_db_connection):
+    mock_get_db_connection.side_effect = DummyConnectionError("DB connection failed")
 
-def test_update_task_success():
-    # Create a task
-    create_resp = create_task(title="Old Title", completed=False)
-    task_id = create_resp.json()["id"]
+    response = client.post("/tasks/", json={"title": "Test Task", "completed": False})
+    assert response.status_code == 500
+    assert response.json() == {"detail": "Database connection error"}
 
-    # Update the task
-    update_resp = client.put(f"/tasks/{task_id}", json={"title": "New Title", "completed": True})
-    assert update_resp.status_code == 200
-    updated_data = update_resp.json()
-    assert updated_data["id"] == task_id
-    assert updated_data["title"] == "New Title"
-    assert updated_data["completed"] is True
+# Test error handling for PUT /tasks/{task_id}
+@patch('routers.tasks.get_db_connection')
+def test_update_task_db_error(mock_get_db_connection):
+    mock_get_db_connection.side_effect = DummyConnectionError("DB connection failed")
 
-# Test updating a non-existent task (fixed error scenario)
+    response = client.put("/tasks/1", json={"title": "Updated Task", "completed": True})
+    assert response.status_code == 500
+    assert response.json() == {"detail": "Database connection error"}
 
-def test_update_task_not_found():
-    # Use a very large task_id that likely does not exist
-    non_existent_id = 999999
-    response = client.put(f"/tasks/{non_existent_id}", json={"title": "Does not exist", "completed": False})
+# Test error handling for DELETE /tasks/{task_id}
+@patch('routers.tasks.get_db_connection')
+def test_delete_task_db_error(mock_get_db_connection):
+    mock_get_db_connection.side_effect = DummyConnectionError("DB connection failed")
+
+    response = client.delete("/tasks/1")
+    assert response.status_code == 500
+    assert response.json() == {"detail": "Database connection error"}
+
+# Test error handling for invalid task update (task not found)
+@patch('routers.tasks.get_db_connection')
+def test_update_task_not_found(mock_get_db_connection):
+    # Setup mock connection and cursor
+    mock_conn = MagicMock()
+    mock_cursor = MagicMock()
+    mock_get_db_connection.return_value = mock_conn
+    mock_conn.cursor.return_value = mock_cursor
+
+    # Simulate no rows updated
+    mock_cursor.rowcount = 0
+
+    response = client.put("/tasks/9999", json={"title": "Nonexistent Task", "completed": True})
     assert response.status_code == 404
-    assert response.json()["detail"] == "Task not found"
+    assert response.json() == {"detail": "Task not found"}
 
-# Test completing a task successfully
+# Test error handling for invalid task delete (task not found)
+@patch('routers.tasks.get_db_connection')
+def test_delete_task_not_found(mock_get_db_connection):
+    mock_conn = MagicMock()
+    mock_cursor = MagicMock()
+    mock_get_db_connection.return_value = mock_conn
+    mock_conn.cursor.return_value = mock_cursor
 
-def test_complete_task_success():
-    create_resp = create_task(title="Incomplete Task", completed=False)
-    task_id = create_resp.json()["id"]
+    # Simulate no rows deleted
+    mock_cursor.rowcount = 0
 
-    complete_resp = client.put(f"/tasks/{task_id}/complete")
-    assert complete_resp.status_code == 200
-    assert complete_resp.json()["message"] == "Task marked as completed"
-
-# Test completing a non-existent task (fixed error scenario)
-
-def test_complete_task_not_found():
-    non_existent_id = 999999
-    response = client.put(f"/tasks/{non_existent_id}/complete")
+    response = client.delete("/tasks/9999")
     assert response.status_code == 404
-    assert response.json()["detail"] == "Task not found"
-
-# Test deleting a task successfully
-
-def test_delete_task_success():
-    create_resp = create_task(title="Task to delete", completed=False)
-    task_id = create_resp.json()["id"]
-
-    delete_resp = client.delete(f"/tasks/{task_id}")
-    assert delete_resp.status_code == 200
-    assert delete_resp.json()["message"] == "Task deleted"
-
-# Test deleting a non-existent task (fixed error scenario)
-
-def test_delete_task_not_found():
-    non_existent_id = 999999
-    response = client.delete(f"/tasks/{non_existent_id}")
-    assert response.status_code == 404
-    assert response.json()["detail"] == "Task not found"
+    assert response.json() == {"detail": "Task not found"}

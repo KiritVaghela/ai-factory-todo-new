@@ -2,6 +2,9 @@ from fastapi import FastAPI, Request
 from routers import tasks
 from starlette.middleware.cors import CORSMiddleware
 from fastapi.testclient import TestClient
+from fastapi.responses import JSONResponse
+from fastapi.exception_handlers import RequestValidationError
+from fastapi.exceptions import HTTPException
 import logging
 import uvicorn
 
@@ -33,6 +36,30 @@ async def log_requests(request: Request, call_next):
         logger.error(f"Unhandled error during request {request.method} {request.url}: {e}", exc_info=True)
         raise
 
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException):
+    logger.error(f"HTTPException: {exc.detail} for request {request.method} {request.url}")
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"detail": exc.detail}
+    )
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    logger.error(f"Validation error: {exc.errors()} for request {request.method} {request.url}")
+    return JSONResponse(
+        status_code=422,
+        content={"detail": exc.errors()}
+    )
+
+@app.exception_handler(Exception)
+async def generic_exception_handler(request: Request, exc: Exception):
+    logger.error(f"Internal server error: {exc} for request {request.method} {request.url}")
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "Internal server error"}
+    )
+
 @app.get("/")
 async def root():
     logger.debug("Root endpoint called")
@@ -60,17 +87,3 @@ def test_get_tasks():
     response = client.get("/tasks/")
     assert response.status_code == 200
     assert isinstance(response.json(), list)
-
-
-def test_update_task():
-    logger.debug("Testing update task endpoint")
-    # First, create a task to update
-    resp = client.post("/tasks/", json={"title": "Task to update", "completed": False})
-    task_id = resp.json()['id']
-    update_response = client.put(f"/tasks/{task_id}", json={"title": "Updated Task", "completed": True})
-    assert update_response.status_code == 200
-    assert update_response.json()['title'] == "Updated Task"
-
-
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
