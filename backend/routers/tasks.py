@@ -1,4 +1,5 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
+from pydantic import BaseModel
 import sqlite3
 
 router = APIRouter()
@@ -10,6 +11,14 @@ def get_db_connection():
     conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row  # Enable accessing columns by name
     return conn
+
+# Define Pydantic models for request validation
+class Task(BaseModel):
+    title: str
+    completed: bool
+
+class TaskUpdate(Task):
+    pass
 
 @router.options("/tasks")
 async def options_tasks():
@@ -26,25 +35,26 @@ async def get_tasks():
     return [dict(task) for task in tasks]
 
 @router.post("/tasks/")
-async def create_task(task: dict):
+async def create_task(task: Task):
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute('INSERT INTO tasks (title, completed) VALUES (?, ?)', (task['title'], task['completed']))
+    cursor.execute('INSERT INTO tasks (title, completed) VALUES (?, ?)', (task.title, task.completed))
     conn.commit()
     task_id = cursor.lastrowid
     conn.close()  
-    return {"id": task_id, "title": task['title'], "completed": task['completed']}
+    return {"id": task_id, "title": task.title, "completed": task.completed}
 
 @router.put("/tasks/{task_id}")
-async def update_task(task_id: int, task: dict):
+async def update_task(task_id: int, task: TaskUpdate):
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute('UPDATE tasks SET title = ?, completed = ? WHERE id = ?', (task['title'], task['completed'], task_id))
+    cursor.execute('UPDATE tasks SET title = ?, completed = ? WHERE id = ?', (task.title, task.completed, task_id))
     if cursor.rowcount == 0:
+        conn.close()
         raise HTTPException(status_code=404, detail="Task not found")
     conn.commit()
     conn.close()
-    return {"id": task_id, "title": task['title'], "completed": task['completed']}
+    return {"id": task_id, "title": task.title, "completed": task.completed}
 
 @router.put("/tasks/{task_id}/complete")
 async def complete_task(task_id: int):
@@ -52,6 +62,7 @@ async def complete_task(task_id: int):
     cursor = conn.cursor()
     cursor.execute('UPDATE tasks SET completed = ? WHERE id = ?', (True, task_id))
     if cursor.rowcount == 0:
+        conn.close()
         raise HTTPException(status_code=404, detail="Task not found")
     conn.commit()
     conn.close()
@@ -63,6 +74,7 @@ async def delete_task(task_id: int):
     cursor = conn.cursor()
     cursor.execute('DELETE FROM tasks WHERE id = ?', (task_id,))
     if cursor.rowcount == 0:
+        conn.close()
         raise HTTPException(status_code=404, detail="Task not found")
     conn.commit()
     conn.close()
