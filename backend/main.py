@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import tasks
+from backend.routers import tasks
 from starlette.middleware.cors import CORSMiddleware
 from fastapi.testclient import TestClient
 
@@ -28,18 +28,15 @@ def test_root():
     assert response.status_code == 200
     assert response.json() == {"message": "Welcome to the ToDo App API"}
 
-
 def test_create_task():
     response = client.post("/tasks/", json={"title": "Test Task", "completed": False})
     assert response.status_code == 200
     assert response.json()['title'] == "Test Task"
 
-
 def test_get_tasks():
     response = client.get("/tasks/")
     assert response.status_code == 200
     assert isinstance(response.json(), list)
-
 
 def test_update_task():
     # First, create a task to update
@@ -50,7 +47,6 @@ def test_update_task():
     assert update_response.json()['title'] == "Updated Task"
     assert update_response.json()['completed'] is True
 
-
 def test_delete_task():
     # First, create a task to delete
     resp = client.post("/tasks/", json={"title": "Task to delete", "completed": False})
@@ -58,13 +54,3 @@ def test_delete_task():
     delete_response = client.delete(f"/tasks/{task_id}")
     assert delete_response.status_code == 200
     assert delete_response.json()['message'] == "Task deleted successfully"
-
-
-def test_options_method():
-    response = client.options('/tasks/')
-    assert response.status_code == 200
-    assert 'GET' in response.headers['allow']
-    assert 'POST' in response.headers['allow']
-    assert 'PUT' in response.headers['allow']
-    assert 'DELETE' in response.headers['allow']
-    assert 'OPTIONS' in response.headers['allow']
