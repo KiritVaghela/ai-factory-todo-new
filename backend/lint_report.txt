@@ -1,0 +1,33 @@
+PYTHON LINT AND TYPE CHECK REPORT
+=================================
+
+1. File: backend/main.py
+------------------------
+No syntax errors detected.
+No type errors detected.
+
+2. File: backend/routers/tasks.py
+---------------------------------
+No syntax errors detected.
+No type errors detected.
+
+3. File: backend/models.py
+--------------------------
+No syntax errors detected.
+No type errors detected.
+
+4. File: backend/db_setup.py
+----------------------------
+No syntax errors detected.
+No type errors detected.
+
+
+SUMMARY
+=======
+No syntax or type errors found in backend Python files.
+
+Tools used:
+- flake8 (for linting)
+- mypy (for static type checking)
+
+Note: If you add new files or change type annotations, rerun the linter and type checker.
