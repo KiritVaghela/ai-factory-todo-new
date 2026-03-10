@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { createRoot } from 'react-dom/client';
 import './styles.css'; // Import Tailwind CSS here
 
 function App() {
@@ -59,30 +58,41 @@ function App() {
     }
   };
 
-  // UI Tests for Desktop and Mobile
-
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">ToDo App</h1>
-      <form onSubmit={submitTask} className="mb-4">
+    <div className="max-w-xl mx-auto p-4 bg-white rounded shadow">
+      <form onSubmit={submitTask} className="flex mb-4">
         <input
           type="text"
-          value={taskTitle}
-          onChange={(e) => setTaskTitle(e.target.value)}
-          className="border rounded p-2"
+          className="flex-1 border rounded-l px-3 py-2 focus:outline-none"
           placeholder="Add a new task..."
+          value={taskTitle}
+          onChange={e => setTaskTitle(e.target.value)}
           required
         />
-        <button type="submit" className="ml-2 bg-blue-500 text-white rounded p-2">Add Task</button>
+        <button
+          type="submit"
+          className="bg-blue-500 text-white px-4 py-2 rounded-r hover:bg-blue-600"
+        >
+          Add
+        </button>
       </form>
-      <ul>
+      <ul className="divide-y">
         {tasks.map(task => (
-          <li key={task.id} className="flex justify-between items-center">
-            <span className={task.completed ? 'line-through' : ''}>{task.title}</span>
-            <div>
-              <button onClick={() => toggleTaskCompletion(task)} className="bg-yellow-500 text-white rounded p-1 mr-2">Toggle</button>
-              <button onClick={() => deleteTask(task.id)} className="bg-red-500 text-white rounded p-1">Delete</button>
-            </div>
+          <li key={task.id} className="flex items-center py-2">
+            <input
+              type="checkbox"
+              checked={task.completed}
+              onChange={() => toggleTaskCompletion(task)}
+              className="mr-2"
+            />
+            <span className={task.completed ? 'line-through flex-1' : 'flex-1'}>{task.title}</span>
+            <button
+              onClick={() => deleteTask(task.id)}
+              className="ml-2 text-red-500 hover:text-red-700"
+              aria-label="Delete task"
+            >
+              &#10005;
+            </button>
           </li>
         ))}
       </ul>

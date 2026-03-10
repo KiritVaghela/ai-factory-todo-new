@@ -1,2 +1,7 @@
-fastapi
-uvicorn
+# Backend dependencies for ToDo App API
+fastapi>=0.95.0
+uvicorn[standard]>=0.22.0
+starlette>=0.27.0
+pydantic>=1.10.0
+sqlite3; python_version>="3.0"
+python-dotenv>=1.0.0
