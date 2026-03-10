@@ -1,64 +1,47 @@
-# Backend - FastAPI
+# Backend
 
-This is the backend service for the ToDo App, built with FastAPI and SQLite.
-
-## Requirements
-
-- Python 3.11+
-- (Recommended) Virtual environment
+This directory contains the backend code for the ToDo application.
 
 ## Setup
 
-1. **Install dependencies:**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   pip install -r requirements.txt
-   ```
+1. Create and activate a virtual environment.
+2. Install dependencies:
 
-2. **Configure environment variables:**
-   - Copy `.env.example` to `.env` and adjust as needed.
+```bash
+pip install -r requirements.txt
+```
 
-3. **Set up the database:**
-   ```bash
-   python db_setup.py
-   ```
-   - This will create `tasks.db` with the required tables.
+3. Initialize the database:
 
-4. **Run the server:**
-   ```bash
-   uvicorn main:app --reload --host 0.0.0.0 --port 8000
-   ```
-   - The API will be available at [http://localhost:8000](http://localhost:8000)
-   - API docs: [http://localhost:8000/docs](http://localhost:8000/docs)
+```bash
+python db_setup.py
+```
 
-## API Endpoints
+4. Run the backend server:
 
-- `GET /tasks/` - List all tasks
-- `POST /tasks/` - Create a new task
-- `PUT /tasks/{task_id}` - Update a task
-- `DELETE /tasks/{task_id}` - Delete a task
-
-## CORS
-
-CORS is enabled for all origins by default (see `main.py`). Adjust as needed for production.
+```bash
+uvicorn main:app --reload
+```
 
 ## Linting
 
-- Example: `flake8 main.py`
-- Lint report: see `lint_report.txt`
+To check the backend code for linting issues, run the following command:
 
-## Testing
+```bash
+./lint_backend.sh
+```
 
-- (Add tests as needed)
+This script runs linting tools to ensure code quality and consistency.
 
-## Running with Docker
+## Environment Variables
 
-- The backend is included in the root `docker-compose.yml` for easy orchestration.
+- Copy `.env.example` to `.env` and update the variables as needed.
 
----
+## API Endpoints
 
-## Troubleshooting
+- `/tasks/` - GET, POST, PUT, DELETE operations for tasks.
 
-- If you change dependencies, rebuild Docker images: `docker-compose build --no-cache`
-- If you change the database schema, rerun `db_setup.py` (may require deleting `tasks.db` for a fresh start).
+## Notes
+
+- The backend uses FastAPI and SQLite.
+- CORS is enabled for all origins.

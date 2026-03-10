@@ -1,63 +1,62 @@
-# Frontend - React + Vite + Tailwind CSS
+# Frontend
 
-This is the frontend for the ToDo App, built with React, Vite, and Tailwind CSS.
+This directory contains the frontend React application for the ToDo app.
 
-## Requirements
+## Available Scripts
 
-- Node.js 18+
-- npm (comes with Node.js)
+In the project directory, you can run:
 
-## Setup
+### `npm install`
 
-1. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+Installs the dependencies.
 
-2. **Start the development server:**
-   ```bash
-   npm run dev
-   ```
-   - The app will be available at [http://localhost:3000](http://localhost:3000)
+### `npm run dev`
 
-3. **Build for production:**
-   ```bash
-   npm run build
-   ```
-   - Output will be in the `dist/` directory.
+Runs the app in development mode.
+
+### `npm run build`
+
+Builds the app for production.
+
+### `npm run preview`
+
+Previews the production build locally.
+
+### `npm run lint`
+
+Runs the linter to check for code style and errors.
+
+### `npm run lint:fix`
+
+Runs the linter and automatically fixes problems.
+
+### `./lint-frontend.sh`
+
+Runs the frontend lint script.
 
 ## Linting
 
-- Run linter:
-  ```bash
-  npm run lint
-  ```
+To check the code for linting errors, run:
 
-## Testing
+```bash
+npm run lint
+```
 
-- Run tests:
-  ```bash
-  npm test
-  ```
+Or you can run the provided lint script directly:
+
+```bash
+./lint-frontend.sh
+```
+
+This will run ESLint on the frontend source files and report any issues.
 
 ## Configuration
 
-- Vite config: `vite.config.js`
-- Tailwind config: `tailwind.config.js`
-- Babel config: `babel.config.js`
+- ESLint configuration is in `.eslintrc.json`.
+- Babel configuration is in `babel.config.js`.
+- Tailwind CSS configuration is in `tailwind.config.js`.
+- Vite configuration is in `vite.config.js`.
 
 ## Notes
 
-- The frontend expects the backend API to be running at `http://localhost:8000` by default. Adjust API URLs in the code if you change backend ports or host.
-- For CORS to work, ensure the backend allows requests from the frontend origin (see backend CORS settings).
-
-## Running with Docker Compose
-
-- The frontend is included in the root `docker-compose.yml` for easy orchestration with the backend.
-
----
-
-## Troubleshooting
-
-- If you change dependencies, rebuild Docker images: `docker-compose build --no-cache`
-- If ports are in use, stop other services or change the port in `vite.config.js` and `docker-compose.yml`.
+Make sure to run linting before committing your code to maintain code quality.
