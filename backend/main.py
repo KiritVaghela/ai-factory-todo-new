@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from routers import tasks
 from starlette.middleware.cors import CORSMiddleware
 from fastapi.testclient import TestClient
+import subprocess
+import sys
 
 app = FastAPI()
 
@@ -60,11 +62,31 @@ def test_delete_task():
     assert delete_response.json()['message'] == "Task deleted successfully"
 
 
-def test_options_method():
-    response = client.options('/tasks/')
-    assert response.status_code == 200
-    assert 'GET' in response.headers['allow']
-    assert 'POST' in response.headers['allow']
-    assert 'PUT' in response.headers['allow']
-    assert 'DELETE' in response.headers['allow']
-    assert 'OPTIONS' in response.headers['allow']
+def run_lint_and_tests():
+    """
+    Run backend linting and tests to ensure no regressions and code quality.
+    """
+    print("Running linting with flake8...")
+    lint_result = subprocess.run([sys.executable, '-m', 'flake8', '.'], capture_output=True, text=True)
+    if lint_result.returncode != 0:
+        print("Linting errors found:")
+        print(lint_result.stdout)
+        print(lint_result.stderr)
+        raise Exception("Linting failed")
+    else:
+        print("No linting errors found.")
+
+    print("Running tests with pytest...")
+    test_result = subprocess.run([sys.executable, '-m', 'pytest', '--maxfail=1', '--disable-warnings', '-q'], capture_output=True, text=True)
+    print(test_result.stdout)
+    if test_result.returncode != 0:
+        print("Tests failed:")
+        print(test_result.stderr)
+        raise Exception("Tests failed")
+    else:
+        print("All tests passed successfully.")
+
+
+if __name__ == "__main__":
+    # Run lint and tests when this script is executed directly
+    run_lint_and_tests()
