@@ -1,51 +1,161 @@
-# ToDo App
+# ToDo App - AI Factory
 
-## Introduction
-This is a simple ToDo application built with FastAPI for the backend and React for the frontend. The application allows users to create, read, update, and delete tasks.
+This is a full-stack ToDo application built with FastAPI (Python) for the backend and React (Vite) for the frontend. It uses SQLite for data storage and Docker for easy deployment.
 
-## Design Decisions
-- **FastAPI** was chosen for the backend due to its high performance and automatic generation of API documentation.
-- **SQLite** is used as the database for simplicity and ease of setup.
-- **React** was selected for the frontend to build a dynamic user interface.
+## Project Structure
 
-## Components Usage
-### Backend
-- `main.py`: The entry point of the application. Sets up FastAPI, adds middleware, and defines the root endpoint.
-- `routers/tasks.py`: Contains the routes related to task operations including creating, retrieving, updating, and deleting tasks.
-- `db_setup.py`: Manages the setup of the SQLite database.
+```
+ai-factory-todo-new/
+  README.md
+  docker-compose.yml
+  Dockerfile
+  backend/
+    README.md
+    requirements.txt
+    db_setup.py
+    main.py
+    models.py
+    .env.example
+    .env
+    tasks.db
+    routers/
+      tasks.py
+  frontend/
+    vite.config.js
+    index.css
+    index.html
+    tailwind.config.js
+    package.json
+    .babelrc
+    package-lock.json
+    babel.config.js
+    index.jsx
+    install-dependencies.js
+    test/
+      setupTests.js
+      build.test.js
+      npm_start.test.js
+    src/
+      main.jsx
+      styles.css
+      DeleteButton.jsx
+      App.jsx
+      TaskList.jsx
+```
 
-### Frontend
-- `src/App.jsx`: The main React component that handles task fetching and rendering.
-- `src/TaskList.jsx`: A component for displaying the list of tasks.
-- `src/DeleteButton.jsx`: A component for rendering a button to delete a task.
+## Prerequisites
 
-## Installation
-1. Clone the repository.
-2. Navigate to the backend and install dependencies with:
+- [Docker](https://www.docker.com/) (recommended for easiest setup)
+- [Python 3.8+](https://www.python.org/) (if running backend locally)
+- [Node.js 16+](https://nodejs.org/) and [npm](https://www.npmjs.com/) (if running frontend locally)
+
+---
+
+## Quick Start with Docker
+
+1. **Clone the repository:**
    ```bash
+   git clone <repo-url>
+   cd ai-factory-todo-new
+   ```
+
+2. **Build and run with Docker Compose:**
+   ```bash
+   docker-compose up --build
+   ```
+   - The backend will be available at [http://localhost:8000](http://localhost:8000)
+   - The frontend will be available at [http://localhost:3000](http://localhost:3000)
+
+---
+
+## Running Backend Locally
+
+1. **Install dependencies:**
+   ```bash
+   cd backend
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
    pip install -r requirements.txt
    ```
-3. Navigate to the frontend and install dependencies with:
+
+2. **Set up the database:**
    ```bash
-   npm install
+   python db_setup.py
    ```
-4. Start the backend server:
+
+3. **Run the FastAPI server:**
    ```bash
    uvicorn main:app --reload
    ```
-5. Start the frontend development server:
+   - The API will be available at [http://localhost:8000](http://localhost:8000)
+   - API docs: [http://localhost:8000/docs](http://localhost:8000/docs)
+
+---
+
+## Running Frontend Locally
+
+1. **Install dependencies:**
+   ```bash
+   cd frontend
+   npm install
+   ```
+   Or run the helper script:
+   ```bash
+   node install-dependencies.js
+   ```
+
+2. **Start the development server:**
    ```bash
    npm run dev
    ```
+   - The app will open at [http://localhost:3000](http://localhost:3000)
 
-## Running Tests
-To run tests for the backend, use:
-```bash
-pytest
-```
+---
 
-## Contributing
-Contributions are welcome! Please create an issue or submit a pull request for any proposed changes.
+## Environment Variables
+
+- Backend uses a `.env` file for configuration. See `backend/.env.example` for reference.
+- By default, the backend uses SQLite (`tasks.db`).
+
+---
+
+## Testing
+
+### Backend
+- Run tests (from `backend/`):
+  ```bash
+  pytest main.py
+  ```
+
+### Frontend
+- Run tests (from `frontend/`):
+  ```bash
+  npm test
+  ```
+
+---
+
+## Notes
+
+- **CORS:** The backend is configured to allow all origins for development. Adjust `allow_origins` in `backend/main.py` for production.
+- **Port Configuration:**
+  - Backend: `8000`
+  - Frontend: `3000`
+- **API Endpoints:**
+  - `GET /tasks/` - List all tasks
+  - `POST /tasks/` - Create a new task
+  - `PUT /tasks/{task_id}` - Update a task
+  - `DELETE /tasks/{task_id}` - Delete a task
+
+---
+
+## Troubleshooting
+
+- If you encounter issues with dependencies, ensure you are using the correct Node and Python versions.
+- For CORS errors, make sure both frontend and backend are running and accessible at their respective ports.
+
+---
 
 ## License
-This project is licensed under the MIT License.
+
+MIT License
