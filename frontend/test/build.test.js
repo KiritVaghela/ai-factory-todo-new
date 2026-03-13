@@ -1,8 +1,10 @@
-import { render } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
 import App from '../src/App';
 
-describe('App Component', () => {
-  test('renders without crashing', () => {
+describe('App component', () => {
+  it('renders without crashing', () => {
     render(<App />);
+    expect(screen.getByText(/ToDo List/i)).toBeInTheDocument();
   });
 });

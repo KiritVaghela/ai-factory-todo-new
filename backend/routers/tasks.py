@@ -11,7 +11,7 @@ DATABASE = "backend/tasks.db"
 
 def get_db_connection():
     conn = sqlite3.connect(DATABASE)
-    conn.row_factory = sqlite3.Row  # Enable accessing columns by name
+    conn.row_factory = sqlite3.Row
     return conn
 
 
@@ -79,4 +79,4 @@ async def delete_task(task_id: int):
         raise HTTPException(status_code=404, detail="Task not found")
     conn.commit()
     conn.close()
-    return {"message": f"Task {task_id} deleted successfully"}
+    return {"message": "Task deleted successfully"}

@@ -1,20 +1,33 @@
 version: '3.8'
+
 services:
-  web:
-    build: .
+  frontend:
+    build:
+      context: ./frontend
     ports:
       - '3000:3000'
-    environment:
-      - NODE_ENV=production
-    depends_on:
-      - mongo
-
-  mongo:
-    image: mongo:4.4
-    ports:
-      - '27017:27017'
     volumes:
-      - mongo-data:/data/db
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - backend
+    networks:
+      - app-network
 
-volumes:
-  mongo-data:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - '8000:8000'
+    volumes:
+      - ./backend:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

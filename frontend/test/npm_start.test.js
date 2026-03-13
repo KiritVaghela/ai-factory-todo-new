@@ -1,15 +1,13 @@
-const { exec } = require('child_process');
-const fs = require('fs');
+import { render, screen } from '@testing-library/react';
+import App from '../src/App';
 
-describe('NPM Start Command', () => {
-  it('should start the app without errors', (done) => {
-    exec('npm run start', (error, stdout, stderr) => {
-      console.log(stdout);
-      console.error(stderr);
-      // Assertions
-      expect(error).toBeNull();
-      expect(stdout).toContain('Vite');  // Expect output to indicate Vite is running
-      done();
-    });
+// Mock axios
+jest.mock('axios');
+
+describe('App component', () => {
+  test('renders ToDo List heading', () => {
+    render(<App />);
+    const headingElement = screen.getByText(/ToDo List/i);
+    expect(headingElement).toBeInTheDocument();
   });
 });

@@ -3,13 +3,11 @@ import axios from 'axios';
 import './styles.css';
 
 function App() {
-  // State to hold task input
   const [taskTitle, setTaskTitle] = useState('');
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch tasks from server on component mount
   useEffect(() => {
     const fetchTasks = async () => {
       try {
@@ -17,7 +15,7 @@ function App() {
         const response = await axios.get('http://localhost:8000/tasks/');
         setTasks(response.data);
         setError(null);
-      } catch (error) {
+      } catch (err) {
         setError('Error fetching tasks');
       } finally {
         setLoading(false);
@@ -26,7 +24,6 @@ function App() {
     fetchTasks();
   }, []);
 
-  // Function to handle task submission
   const submitTask = async (event) => {
     event.preventDefault();
     if (!taskTitle.trim()) return;
@@ -38,80 +35,76 @@ function App() {
       setTasks([...tasks, response.data]);
       setTaskTitle('');
       setError(null);
-    } catch (error) {
+    } catch (err) {
       setError('Error submitting task');
     }
   };
 
-  // Function to handle task completion state change
   const toggleTaskCompletion = async (task) => {
     try {
       const updatedTask = { ...task, completed: !task.completed };
       await axios.put(`http://localhost:8000/tasks/${task.id}`, updatedTask);
       setTasks(tasks.map(t => (t.id === task.id ? updatedTask : t)));
       setError(null);
-    } catch (error) {
+    } catch (err) {
       setError('Error updating task');
     }
   };
 
-  // Function to handle task deletion
   const deleteTask = async (taskId) => {
     try {
       await axios.delete(`http://localhost:8000/tasks/${taskId}`);
       setTasks(tasks.filter(task => task.id !== taskId));
       setError(null);
-    } catch (error) {
+    } catch (err) {
       setError('Error deleting task');
     }
   };
 
   return (
-    <div className="max-w-xl mx-auto bg-white rounded shadow p-6">
-      <form onSubmit={submitTask} className="flex mb-6">
-        <input
-          type="text"
-          className="flex-1 border border-gray-300 rounded-l px-3 py-2 focus:outline-none"
-          placeholder="Add a new task..."
-          value={taskTitle}
-          onChange={e => setTaskTitle(e.target.value)}
-        />
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded-r hover:bg-blue-600"
-        >
-          Add
-        </button>
+    <div className="max-w-xl mx-auto bg-white shadow-lg rounded-lg p-6">
+      <h1 className="text-2xl font-bold mb-4">ToDo List</h1>
+      <form onSubmit={submitTask} className="mb-4">
+        <div className="flex">
+          <input
+            type="text"
+            value={taskTitle}
+            onChange={(e) => setTaskTitle(e.target.value)}
+            placeholder="Add a new task"
+            className="flex-grow px-4 py-2 border rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <button
+            type="submit"
+            className="px-4 py-2 bg-blue-500 text-white rounded-r-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            Add
+          </button>
+        </div>
       </form>
-      {error && <div className="text-red-500 mb-2">{error}</div>}
+      {error && <div className="text-red-500 mb-4">{error}</div>}
       {loading ? (
-        <div className="text-gray-500">Loading tasks...</div>
+        <div className="text-center">Loading...</div>
       ) : (
-        <ul className="divide-y divide-gray-200">
-          {tasks.length === 0 ? (
-            <li className="text-gray-400">No tasks yet.</li>
-          ) : (
-            tasks.map(task => (
-              <li key={task.id} className="flex items-center py-2">
+        <ul className="space-y-2">
+          {tasks.map((task) => (
+            <li key={task.id} className="flex items-center justify-between p-2 border rounded-md">
+              <div className="flex items-center">
                 <input
                   type="checkbox"
-                  checked={!!task.completed}
+                  checked={task.completed}
                   onChange={() => toggleTaskCompletion(task)}
-                  className="mr-3"
+                  className="mr-2"
                 />
-                <span className={task.completed ? 'line-through text-gray-400 flex-1' : 'flex-1'}>
-                  {task.title}
-                </span>
-                <button
-                  onClick={() => deleteTask(task.id)}
-                  className="ml-3 text-red-500 hover:text-red-700"
-                  title="Delete"
-                >
-                  <i className="fas fa-trash"></i>
-                </button>
-              </li>
-            ))
-          )}
+                <span className={task.completed ? 'line-through text-gray-500' : ''}>{task.title}</span>
+              </div>
+              <button
+                onClick={() => deleteTask(task.id)}
+                className="text-red-500 hover:text-red-700"
+              >
+                Delete
+              </button>
+            </li>
+          ))}
         </ul>
       )}
     </div>
