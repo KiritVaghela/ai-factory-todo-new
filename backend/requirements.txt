@@ -1,6 +1,5 @@
 fastapi
 uvicorn
-sqlite3
 ruff
 black
 mypy
